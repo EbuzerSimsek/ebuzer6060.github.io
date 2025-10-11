@@ -1,249 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PeakLens – Mountain Identifier App for iOS | Identify Any Peak Instantly</title>
-  <meta name="description" content="Identify mountains and peaks around you instantly using PeakLens, the AI-powered mountain identifier app for iPhone. Discover names, elevations, and details of mountains in AR.">
-  <meta name="keywords" content="mountain identifier, peak identifier, peaklens, identify mountains, mountain finder app, AR mountain app, iOS, outdoor hiking app">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeakLens – Mountain Identifier App for iOS | Identify Any Peak Instantly</title>
+    <meta name="description" content="Identify mountains and peaks around you instantly using PeakLens, the AI-powered mountain identifier app for iPhone. Discover names, elevations, and details of mountains in AR.">
+    <meta name="keywords" content="mountain identifier, peak identifier, peaklens, identify mountains, mountain finder app, AR mountain app, iOS, outdoor hiking app">
+    
+    <meta property="og:title" content="PeakLens – Mountain Identifier App for iOS">
+    <meta property="og:description" content="Identify mountains instantly with your iPhone camera. Perfect for hikers and travelers.">
+    <meta property="og:image" content="https://peaklens.pro/assets/preview.jpg">
+    <meta property="og:url" content="https://peaklens.pro">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <link rel="canonical" href="https://peaklens.pro" />
+    <link rel="icon" type="image/png" href="icon.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="icon.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <meta property="og:title" content="PeakLens – Mountain Identifier App for iOS">
-  <meta property="og:description" content="Identify mountains instantly with your iPhone camera. Perfect for hikers and travelers.">
-  <meta property="og:image" content="https://peaklens.pro/assets/preview.jpg">
-  <meta property="og:url" content="https://peaklens.pro">
-  <meta name="twitter:card" content="summary_large_image">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #fff;
+            color: #1d1d1f;
+            overflow-x: hidden;
+        }
 
-  <link rel="canonical" href="https://peaklens.pro" />
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
 
-  <link rel="icon" type="image/png" href="icon.png" sizes="32x32">
-  <link rel="apple-touch-icon" href="icon.png">
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-  <style>
-    /* CSS kodunu aynen korudum */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: linear-gradient(180deg, #0a1628 0%, #1a2332 50%, #0d1b2a 100%); color: #f5f5f7; overflow-x: hidden; }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            text-decoration: none;
+        }
 
-    nav { position: fixed; top: 0; width: 100%; background: rgba(10, 22, 40, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-    .nav-container { max-width: 1200px; margin: 0 auto; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-    .nav-logo { font-size: 24px; font-weight: 700; color: #fff; text-decoration: none; }
-    .nav-links { display: flex; gap: 40px; list-style: none; }
-    .nav-links a { color: #f5f5f7; text-decoration: none; font-size: 14px; transition: color 0.3s; }
-    .nav-links a:hover { color: #0071e3; }
+        .nav-logo img.nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
 
-    .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-   }
-  
-  .nav-logo img.nav-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
 
-    .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 20px 80px; background: linear-gradient(135deg, #0f2847 0%, #1a3a5c 50%, #0a1f3d 100%); position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; width: 150%; height: 150%; background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%); animation: pulse 8s ease-in-out infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.5; } }
+        .nav-links a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
 
-    .hero-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; z-index: 1; }
-    .hero-content { text-align: left; }
-    .app-logo { width: 120px; height: 120px; margin-bottom: 30px; border-radius: 28px; animation: float 3s ease-in-out infinite; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
-    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .nav-links a:hover {
+            color: #0071e3;
+        }
 
-    h1 { font-size: 64px; font-weight: 700; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #999 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .tagline { font-size: 24px; color: #86868b; margin-bottom: 40px; font-weight: 400; line-height: 1.4; }
+        /* Hero Section - Centered Layout */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 20px 80px;
+            background: linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%);
+            text-align: center;
+        }
 
-    .cta-button { display: inline-block; }
-    .cta-button img { width: 245px; height: 82px; vertical-align: middle; object-fit: contain; transition: transform 0.3s ease, opacity 0.3s ease; }
-    .cta-button:hover img { transform: scale(1.05); opacity: 0.9; }
+        .hero-content {
+            max-width: 800px;
+            margin-bottom: 60px;
+        }
 
-    .hero-screenshot { display: flex; justify-content: center; animation: fadeInRight 1s ease-out; }
-    .hero-screenshot img { max-width: 100%; max-height: 600px; height: auto; transition: transform 0.3s ease; }
-    .hero-screenshot img:hover { transform: scale(1.05); }
-    @keyframes fadeInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1d1d1f;
+            letter-spacing: -0.02em;
+        }
 
-    .screenshots-section { padding: 120px 20px; background: transparent !important; }
-    .section-title { font-size: 48px; font-weight: 700; text-align: center; margin-bottom: 20px; }
-    .section-subtitle { font-size: 24px; color: #86868b; text-align: center; margin-bottom: 60px; }
+        .tagline {
+            font-size: 24px;
+            color: #6e6e73;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
 
-    .screenshots-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 20px; }
-    .screenshot-item { background: linear-gradient(135deg, #1e3a52 0%, #15293d 100%); border-radius: 40px; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.15); transition: all 0.3s ease; aspect-ratio: 1096/2241; }
-    .screenshot-item:hover { transform: translateY(-10px); border-color: rgba(59, 130, 246, 0.6); box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3); }
-    .screenshot-item img { width: 100%; height: 100%; object-fit: cover; }
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    .about-mountains { padding: 120px 20px; background: linear-gradient(180deg, #0d2238 0%, #162d45 50%, #0f2540 100%); }
-    .about-container { max-width: 1000px; margin: 0 auto; }
-    .about-mountains h2 { font-size: 48px; font-weight: 700; margin-bottom: 30px; text-align: center; }
-    .about-mountains p { font-size: 20px; line-height: 1.8; color: #86868b; margin-bottom: 20px; }
+        .cta-button {
+            display: inline-block;
+        }
 
-    .features { padding: 120px 20px; background: linear-gradient(180deg, #0a1f3d 0%, #0d2238 50%, #0f2540 100%); }
-    .feature-grid { max-width: 1200px; margin: 60px auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-    .feature-card { background: rgba(59, 130, 246, 0.08); backdrop-filter: blur(10px); border-radius: 24px; padding: 40px; transition: all 0.4s ease; border: 1px solid rgba(255, 255, 255, 0.15); }
-    .feature-card:hover { transform: translateY(-10px); background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 20px 40px rgba(59, 130, 246, 0.25); }
-    .feature-icon { font-size: 48px; margin-bottom: 20px; display: block; }
-    .feature-card h3 { font-size: 28px; margin-bottom: 16px; color: #fff; }
-    .feature-card p { font-size: 18px; line-height: 1.6; color: #86868b; }
+        .cta-button img {
+            width: 200px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
 
-    .download-section { padding: 120px 20px; text-align: center; background: radial-gradient(circle at center, rgba(59, 130, 246, 0.2) 0%, #0a1f3d 70%); }
-    .download-section h2 { font-size: 56px; margin-bottom: 30px; }
-    .download-section p { font-size: 24px; color: #86868b; margin-bottom: 50px; }
+        .cta-button:hover img {
+            transform: scale(1.05);
+        }
 
-    footer { padding: 60px 20px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-    footer p { color: #86868b; font-size: 14px; }
+        .btn-secondary {
+            padding: 14px 32px;
+            background: #fff;
+            color: #0071e3;
+            border: 2px solid #0071e3;
+            border-radius: 980px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
 
-    @media (max-width: 768px) {
-      .nav-links { gap: 20px; font-size: 12px; }
-      .hero-container { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-      .hero-content { text-align: center; }
-      h1 { font-size: 40px; }
-      .tagline { font-size: 20px; }
-      .section-title { font-size: 36px; }
-      .screenshots-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-      .feature-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+        .btn-secondary:hover {
+            background: #0071e3;
+            color: #fff;
+        }
+
+        /* Hero Screenshots Grid */
+        .hero-screenshots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-screenshot-item {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+            aspect-ratio: 1096/2241;
+        }
+
+        .hero-screenshot-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .hero-screenshot-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Feature badges on screenshots */
+        .screenshot-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d1d1f;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .screenshot-rating {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1d1d1f;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* About Section */
+        .about-mountains {
+            padding: 120px 20px;
+            background: #f5f7fa;
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-mountains h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #1d1d1f;
+        }
+
+        .about-mountains p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #6e6e73;
+            margin-bottom: 20px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 120px 20px;
+            background: #fff;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1d1d1f;
+        }
+
+        .section-subtitle {
+            font-size: 24px;
+            color: #6e6e73;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .feature-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: #f5f7fa;
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #6e6e73;
+        }
+
+        /* Download Section */
+        .download-section {
+            padding: 120px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%);
+        }
+
+        .download-section h2 {
+            font-size: 48px;
+            margin-bottom: 30px;
+            color: #1d1d1f;
+            font-weight: 700;
+        }
+
+        .download-section p {
+            font-size: 21px;
+            color: #6e6e73;
+            margin-bottom: 50px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
+
+        footer p {
+            color: #6e6e73;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-screenshots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-screenshot-item:last-child {
+                grid-column: 1 / -1;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+
+            .tagline {
+                font-size: 20px;
+            }
+
+            .hero-screenshots {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .hero-screenshot-item:last-child {
+                max-width: 100%;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-container">
-      <a href="#home" class="nav-logo">
-  <img src="icon.png" alt="PeakLens Logo" class="nav-icon">
-  PeakLens
-</a>
-      <ul class="nav-links">
-        <li><a href="#screenshots">Screenshots</a></li>
-        <li><a href="#about">About Mountains</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#download">Download</a></li>
-      </ul>
-    </div>
-  </nav>
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <img src="icon.png" alt="PeakLens Logo" class="nav-icon">
+                PeakLens
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">About Mountains</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#download">Download</a></li>
+            </ul>
+        </div>
+    </nav>
 
-  <section id="home" class="hero">
-    <div class="hero-container">
-      <div class="hero-content">
-        <img src="icon.png" alt="PeakLens Mountain Identifier App Icon" class="app-logo">
-        <h1>PeakLens</h1>
-        <p class="tagline">The ultimate mountain identifier app.<br>Identify mountains instantly with AI-powered recognition.</p>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Identify Mountains. Explore Nature.</h1>
+            <p class="tagline">AI-powered mountain identification designed for hikers, travelers, and nature enthusiasts.</p>
+            
+            <div class="cta-buttons">
+                <a href="https://apps.apple.com/us/app/mountain-identifier-peaklens/id6752770531?itscg=30200&itsct=apps_box_badge&mttnsubad=6752770531" class="cta-button">
+                    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1758758400" alt="Download on the App Store">
+                </a>
+                <a href="#features" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+
+        <div class="hero-screenshots">
+            <div class="hero-screenshot-item">
+                <span class="screenshot-badge">📸 Instant Recognition</span>
+                <img src="screenshot1.png" alt="Mountain Recognition Feature">
+            </div>
+            <div class="hero-screenshot-item">
+                <span class="screenshot-rating">⭐ 4.8/5 Rating</span>
+                <img src="screenshot2.png" alt="Mountain Details">
+            </div>
+            <div class="hero-screenshot-item">
+                <span class="screenshot-badge">🌍 Global Database</span>
+                <img src="screenshot3.png" alt="Climate Information">
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-mountains">
+        <div class="about-container">
+            <h2>The Majesty of Mountains</h2>
+            <p>Mountains have captivated humanity for millennia, standing as symbols of challenge, beauty, and natural wonder. These geological marvels cover approximately 24% of Earth's land surface and are home to 15% of the world's population. From the towering Himalayas to the ancient Appalachians, each mountain range tells a unique story of Earth's dynamic history.</p>
+            
+            <p>Mountains are formed through tectonic forces, volcanic activity, or erosion, creating diverse ecosystems at different elevations. These elevation zones support distinct flora and fauna, making mountains biodiversity hotspots. The alpine climate varies dramatically with altitude, creating unique microclimates where specialized species thrive.</p>
+            
+            <p>Beyond their ecological importance, mountains serve as crucial water sources for billions of people worldwide. They act as "water towers," capturing precipitation and releasing it gradually through rivers and streams. Mountains also play a vital role in regulating global climate patterns and weather systems.</p>
+            
+            <p>For outdoor enthusiasts, mountains offer unparalleled opportunities for exploration, from casual hiking to technical climbing. Understanding these magnificent formations enhances our appreciation and helps us become better stewards of these precious natural resources. With PeakLens mountain identifier, you can instantly identify any mountain, learn about its geology, climate, wildlife, and climbing routes, transforming every outdoor adventure into an educational journey.</p>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2 class="section-title">Powerful Features</h2>
+        <p class="section-subtitle">Everything you need for mountain exploration</p>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <span class="feature-icon">📸</span>
+                <h3>Instant Recognition</h3>
+                <p>Take a photo and let AI identify the mountain instantly. Fast and accurate results powered by advanced machine learning.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🌍</span>
+                <h3>Detailed Information</h3>
+                <p>Elevation, location, climate data, and much more. Comprehensive information about every mountain.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🦅</span>
+                <h3>Wildlife Guide</h3>
+                <p>Learn about the wildlife in the region. What animals live there and when can you see them?</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🧗</span>
+                <h3>Climbing Routes</h3>
+                <p>Difficulty levels, best visiting times, and recommended climbing routes for every peak.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📚</span>
+                <h3>Become an Expert</h3>
+                <p>Expand your knowledge with every mountain you discover. Build your personal mountain encyclopedia.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">💾</span>
+                <h3>Save Your History</h3>
+                <p>All your discoveries are saved. Review them anytime and track your mountain adventures.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="download" class="download-section">
+        <h2>Start Exploring Today</h2>
+        <p>Begin your mountain discovery journey with PeakLens Mountain Identifier</p>
         <a href="https://apps.apple.com/us/app/mountain-identifier-peaklens/id6752770531?itscg=30200&itsct=apps_box_badge&mttnsubad=6752770531" class="cta-button">
-          <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1758758400" alt="Download on the App Store">
+            <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1758758400" alt="Download on the App Store">
         </a>
-      </div>
-      <div class="hero-screenshot">
-        <img 
-          srcset="screenshot1-480.webp 480w, screenshot1-768.webp 768w, screenshot1-1200.webp 1200w"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          src="screenshot4-1200.webp"
-          alt="PeakLens Mountain Identifier Screenshot"
-          loading="lazy">
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="screenshots" class="screenshots-section">
-    <h2 class="section-title">Experience the App</h2>
-    <p class="section-subtitle">Intuitive design meets powerful functionality</p>
-    
-    <div class="screenshots-grid">
-      <div class="screenshot-item">
-        <img 
-          srcset="screenshot1-480.webp 480w, screenshot1-768.webp 768w, screenshot1-1200.webp 1200w"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          src="screenshot1-1200.webp"
-          alt="Mountain Identifier Recognition Feature"
-          loading="lazy">
-      </div>
-      <div class="screenshot-item">
-        <img 
-          srcset="screenshot2-480.webp 480w, screenshot2-768.webp 768w, screenshot2-1200.webp 1200w"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          src="screenshot2-1200.webp"
-          alt="Mountain Identifier Detailed Information"
-          loading="lazy">
-      </div>
-      <div class="screenshot-item">
-        <img 
-          srcset="screenshot3-480.webp 480w, screenshot3-768.webp 768w, screenshot3-1200.webp 1200w"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          src="screenshot3-1200.webp"
-          alt="Mountain Identifier Climate Data"
-          loading="lazy">
-      </div>
-      <div class="screenshot-item">
-        <img 
-          srcset="screenshot4-480.webp 480w, screenshot4-768.webp 768w, screenshot4-1200.webp 1200w"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          src="screenshot4-1200.webp"
-          alt="Mountain Identifier Wildlife Guide"
-          loading="lazy">
-      </div>
-    </div>
-  </section>
+    <footer>
+        <p>© 2025 PeakLens. All rights reserved.</p>
+    </footer>
 
-  <!-- About Section -->
-  <section id="about" class="about-mountains">
-    <div class="about-container">
-      <h2>The Majesty of Mountains</h2>
-      <p>Mountains have captivated humanity for millennia...</p>
-      <!-- Diğer paragraflar aynı şekilde -->
-    </div>
-  </section>
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
 
-  <!-- Features Section -->
-  <section id="features" class="features">
-    <h2 class="section-title">Powerful Features</h2>
-    <p class="section-subtitle">Everything you need for mountain exploration</p>
-    <div class="feature-grid">
-      <div class="feature-card"><span class="feature-icon">📸</span><h3>Instant Recognition</h3><p>Take a photo and let AI identify the mountain instantly...</p></div>
-      <div class="feature-card"><span class="feature-icon">🌍</span><h3>Detailed Information</h3><p>Elevation, location, climate data, and much more...</p></div>
-      <div class="feature-card"><span class="feature-icon">🦅</span><h3>Wildlife Guide</h3><p>Learn about the wildlife in the region...</p></div>
-      <div class="feature-card"><span class="feature-icon">🧗</span><h3>Climbing Routes</h3><p>Difficulty levels, best visiting times...</p></div>
-      <div class="feature-card"><span class="feature-icon">📚</span><h3>Become an Expert</h3><p>Expand your knowledge with every mountain...</p></div>
-      <div class="feature-card"><span class="feature-icon">💾</span><h3>Save Your History</h3><p>All your discoveries are saved...</p></div>
-    </div>
-  </section>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
 
-  <section id="download" class="download-section">
-    <h2>Start Exploring Today</h2>
-    <p>Begin your mountain discovery journey with PeakLens Mountain Identifier</p>
-    <a href="https://apps.apple.com/us/app/mountain-identifier-peaklens/id6752770531?itscg=30200&itsct=apps_box_badge&mttnsubad=6752770531" class="cta-button">
-      <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1758758400" alt="Download on the App Store">
-    </a>
-  </section>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-  <footer>
-    <p>© 2025 PeakLens. All rights reserved.</p>
-  </footer>
-
-  <script>
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    // Scroll animations
-    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -100px 0px' };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.feature-card, .screenshot-item').forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(30px)';
-      card.style.transition = 'all 0.6s ease';
-      observer.observe(card);
-    });
-  </script>
+        document.querySelectorAll('.feature-card, .hero-screenshot-item').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
