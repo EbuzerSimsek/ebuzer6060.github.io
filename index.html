@@ -9,7 +9,7 @@
     
     <meta property="og:title" content="PeakLens – Mountain Identifier App for iOS">
     <meta property="og:description" content="Identify mountains instantly with your iPhone camera. Perfect for hikers and travelers.">
-    <meta property="og:image" content="https://peaklens.pro/assets/preview.jpg">
+    <meta property="og:image" content="https://peaklens.pro/hero-screenshot.png">
     <meta property="og:url" content="https://peaklens.pro">
     <meta name="twitter:card" content="summary_large_image">
     
@@ -163,11 +163,12 @@
         /* Hero Screenshots Grid */
         .hero-screenshots {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
+            align-items: end;
         }
 
         .hero-screenshot-item {
@@ -177,6 +178,10 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
             aspect-ratio: 1096/2241;
+        }
+
+        .hero-screenshot-item:nth-child(2) {
+            transform: translateY(-40px);
         }
 
         .hero-screenshot-item:hover {
@@ -428,7 +433,7 @@
             </div>
             <div class="hero-screenshot-item">
                 <span class="screenshot-badge">🌍 Global Database</span>
-                <img src="screenshot3.png" alt="Climate Information">
+                <img src="screenshot4.png" alt="Climate Information">
             </div>
         </div>
     </section>
