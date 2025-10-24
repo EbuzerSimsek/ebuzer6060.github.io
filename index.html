@@ -162,13 +162,13 @@
 
         /* Hero Screenshots Grid */
         .hero-screenshots {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
             gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
-            align-items: end;
         }
 
         .hero-screenshot-item {
@@ -177,15 +177,25 @@
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
-            aspect-ratio: 1096/2241;
+        }
+
+        .hero-screenshot-item:nth-child(1),
+        .hero-screenshot-item:nth-child(3) {
+            width: 280px;
+            transform: translateY(-30px);
         }
 
         .hero-screenshot-item:nth-child(2) {
-            transform: translateY(-40px);
+            width: 380px;
         }
 
         .hero-screenshot-item:hover {
             transform: translateY(-10px);
+        }
+        
+        .hero-screenshot-item:nth-child(1):hover,
+        .hero-screenshot-item:nth-child(3):hover {
+            transform: translateY(-40px);
         }
 
         .hero-screenshot-item img {
