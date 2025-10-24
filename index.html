@@ -1,544 +1,174 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeakLens – Mountain Identifier App for iOS | Identify Any Peak Instantly</title>
-    <meta name="description" content="Identify mountains and peaks around you instantly using PeakLens, the AI-powered mountain identifier app for iPhone. Discover names, elevations, and details of mountains in AR.">
-    <meta name="keywords" content="mountain identifier, peak identifier, peaklens, identify mountains, mountain finder app, AR mountain app, iOS, outdoor hiking app">
+//
+//  ShareMountainCardView.swift
+//  Mountain Identifier
+//
+//  Created by Ebuzer on 16.02.2025.
+//
+
+import SwiftUI
+
+struct ShareMountainCardView: View {
+    let mountain: MountainResponse
+    let mountainImage: UIImage
     
-    <meta property="og:title" content="PeakLens – Mountain Identifier App for iOS">
-    <meta property="og:description" content="Identify mountains instantly with your iPhone camera. Perfect for hikers and travelers.">
-    <meta property="og:image" content="https://peaklens.pro/hero-screenshot.png">
-    <meta property="og:url" content="https://peaklens.pro">
-    <meta name="twitter:card" content="summary_large_image">
-    
-    <link rel="canonical" href="https://peaklens.pro" />
-    <link rel="icon" type="image/png" href="icon.png" sizes="32x32">
-    <link rel="apple-touch-icon" href="icon.png">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #fff;
-            color: #1d1d1f;
-            overflow-x: hidden;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 20px;
-            font-weight: 600;
-            color: #1d1d1f;
-            text-decoration: none;
-        }
-
-        .nav-logo img.nav-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #1d1d1f;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #0071e3;
-        }
-
-        /* Hero Section - Centered Layout */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 140px 20px 80px;
-            background: linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%);
-            text-align: center;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin-bottom: 60px;
-        }
-
-        h1 {
-            font-size: 56px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #1d1d1f;
-            letter-spacing: -0.02em;
-            white-space: nowrap;
-        }
-
-        .tagline {
-            font-size: 24px;
-            color: #6e6e73;
-            margin-bottom: 40px;
-            line-height: 1.5;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .cta-button {
-            display: inline-block;
-        }
-
-        .cta-button img {
-            width: 200px;
-            height: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .cta-button:hover img {
-            transform: scale(1.05);
-        }
-
-        .btn-secondary {
-            padding: 14px 32px;
-            background: #fff;
-            color: #0071e3;
-            border: 2px solid #0071e3;
-            border-radius: 980px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: #0071e3;
-            color: #fff;
-        }
-
-        /* Hero Screenshots Grid */
-        .hero-screenshots {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            align-items: end;
-        }
-
-        .hero-screenshot-item {
-            position: relative;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease;
-            aspect-ratio: 1096/2241;
-        }
-
-        .hero-screenshot-item:nth-child(2) {
-            transform: translateY(-40px);
-        }
-
-        .hero-screenshot-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .hero-screenshot-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Feature badges on screenshots */
-        .screenshot-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1d1d1f;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .screenshot-rating {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #1d1d1f;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* About Section */
-        .about-mountains {
-            padding: 120px 20px;
-            background: #f5f7fa;
-        }
-
-        .about-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .about-mountains h2 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            text-align: center;
-            color: #1d1d1f;
-        }
-
-        .about-mountains p {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #6e6e73;
-            margin-bottom: 20px;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 120px 20px;
-            background: #fff;
-        }
-
-        .section-title {
-            font-size: 48px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #1d1d1f;
-        }
-
-        .section-subtitle {
-            font-size: 24px;
-            color: #6e6e73;
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .feature-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .feature-card {
-            background: #f5f7fa;
-            border-radius: 20px;
-            padding: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 16px;
-            color: #1d1d1f;
-            font-weight: 600;
-        }
-
-        .feature-card p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #6e6e73;
-        }
-
-        /* Download Section */
-        .download-section {
-            padding: 120px 20px;
-            text-align: center;
-            background: linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%);
-        }
-
-        .download-section h2 {
-            font-size: 48px;
-            margin-bottom: 30px;
-            color: #1d1d1f;
-            font-weight: 700;
-        }
-
-        .download-section p {
-            font-size: 21px;
-            color: #6e6e73;
-            margin-bottom: 50px;
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            background: #fff;
-        }
-
-        footer p {
-            color: #6e6e73;
-            font-size: 14px;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-screenshots {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .hero-screenshot-item:last-child {
-                grid-column: 1 / -1;
-                max-width: 400px;
-                margin: 0 auto;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            h1 {
-                font-size: 40px;
-            }
-
-            .tagline {
-                font-size: 20px;
-            }
-
-            .hero-screenshots {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .hero-screenshot-item:last-child {
-                max-width: 100%;
-            }
-
-            .section-title {
-                font-size: 36px;
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav>
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">
-                <img src="icon.png" alt="PeakLens Logo" class="nav-icon">
-                PeakLens
-            </a>
-            <ul class="nav-links">
-                <li><a href="#about">About Mountains</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#download">Download</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Identify Mountains. Explore Nature.</h1>
-            <p class="tagline">AI-powered mountain identification designed for hikers, travelers, and nature enthusiasts.</p>
+    var body: some View {
+        ZStack {
+            Color.black
             
-            <div class="cta-buttons">
-                <a href="https://apps.apple.com/us/app/mountain-identifier-peaklens/id6752770531?itscg=30200&itsct=apps_box_badge&mttnsubad=6752770531" class="cta-button">
-                    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1758758400" alt="Download on the App Store">
-                </a>
-                <a href="#features" class="btn-secondary">Learn More</a>
-            </div>
-        </div>
-
-        <div class="hero-screenshots">
-            <div class="hero-screenshot-item">
-                <span class="screenshot-badge">📸 Instant Recognition</span>
-                <img src="screenshot1.png" alt="Mountain Recognition Feature">
-            </div>
-            <div class="hero-screenshot-item">
-                <span class="screenshot-rating">⭐ 4.8/5 Rating</span>
-                <img src="screenshot2.png" alt="Mountain Details">
-            </div>
-            <div class="hero-screenshot-item">
-                <span class="screenshot-badge">🌍 Global Database</span>
-                <img src="screenshot4.png" alt="Climate Information">
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="about-mountains">
-        <div class="about-container">
-            <h2>The Majesty of Mountains</h2>
-            <p>Mountains have captivated humanity for millennia, standing as symbols of challenge, beauty, and natural wonder. These geological marvels cover approximately 24% of Earth's land surface and are home to 15% of the world's population. From the towering Himalayas to the ancient Appalachians, each mountain range tells a unique story of Earth's dynamic history.</p>
+            // Dağ fotoğrafı - Tam ekran
+            Image("shareMountain")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .cornerRadius(20)
+                .frame(width: 1080, height: 600)
+                .overlay(
+                    // Alt gradient overlay - en alttan yukarı
+                    LinearGradient(
+                        colors: [
+                            .black,
+                            .black.opacity(0.8),
+                            .black.opacity(0.6),
+                            .black.opacity(0.4),
+                            .black.opacity(0.2),
+                            .clear
+                        ],
+                        startPoint: .bottom,
+                        endPoint: .top
+                    )
+                )
+                
             
-            <p>Mountains are formed through tectonic forces, volcanic activity, or erosion, creating diverse ecosystems at different elevations. These elevation zones support distinct flora and fauna, making mountains biodiversity hotspots. The alpine climate varies dramatically with altitude, creating unique microclimates where specialized species thrive.</p>
+            // Alt gradient
+            VStack {
+                
+                Spacer()
+                
+                VStack(spacing: 16) {
+                    // Dağ ismi
+                    Text(mountain.mountainName)
+                        .font(.system(size: 35, weight: .bold))
+                        .shadow(color: Color.black, radius:40)
+                        .foregroundColor(.white)
+                        .padding(.trailing,70)
+                    
+                    // Açıklama
+                    Text("Everest is the heighest mountain in the world.")
+                        .font(.system(size: 20))
+                        .shadow(color: Color.black, radius:40)
+                        .foregroundColor(.white)
+                    
+                    // Rakım ve konum
+                    HStack(spacing: 20) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.up.circle.fill")
+                                .foregroundColor(.green)
+                                .font(.system(size: 16))
+                            Text(mountain.elevation)
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
+                        }
+                        
+                        HStack(spacing: 4) {
+                            Image(systemName: "location.fill")
+                                .foregroundColor(.blue)
+                                .font(.system(size: 16))
+                            Text(mountain.location)
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .shadow(color: Color.black, radius: 20)
+                    
+                  
+                    
+                    // Marka
+                    HStack(spacing: 10) {
+                        Image("icon")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .foregroundStyle(.white)
+                            .cornerRadius(8)
+                        
+                        Text("PeakLens")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                }.frame(width: 320)
+                    .padding(.bottom,160)
+                
+            }
             
-            <p>Beyond their ecological importance, mountains serve as crucial water sources for billions of people worldwide. They act as "water towers," capturing precipitation and releasing it gradually through rivers and streams. Mountains also play a vital role in regulating global climate patterns and weather systems.</p>
-            
-            <p>For outdoor enthusiasts, mountains offer unparalleled opportunities for exploration, from casual hiking to technical climbing. Understanding these magnificent formations enhances our appreciation and helps us become better stewards of these precious natural resources. With PeakLens mountain identifier, you can instantly identify any mountain, learn about its geology, climate, wildlife, and climbing routes, transforming every outdoor adventure into an educational journey.</p>
-        </div>
-    </section>
-
-    <section id="features" class="features">
-        <h2 class="section-title">Powerful Features</h2>
-        <p class="section-subtitle">Everything you need for mountain exploration</p>
+        }.ignoresSafeArea()
         
-        <div class="feature-grid">
-            <div class="feature-card">
-                <span class="feature-icon">📸</span>
-                <h3>Instant Recognition</h3>
-                <p>Take a photo and let AI identify the mountain instantly. Fast and accurate results powered by advanced machine learning.</p>
-            </div>
+    }
+}
 
-            <div class="feature-card">
-                <span class="feature-icon">🌍</span>
-                <h3>Detailed Information</h3>
-                <p>Elevation, location, climate data, and much more. Comprehensive information about every mountain.</p>
-            </div>
-
-            <div class="feature-card">
-                <span class="feature-icon">🦅</span>
-                <h3>Wildlife Guide</h3>
-                <p>Learn about the wildlife in the region. What animals live there and when can you see them?</p>
-            </div>
-
-            <div class="feature-card">
-                <span class="feature-icon">🧗</span>
-                <h3>Climbing Routes</h3>
-                <p>Difficulty levels, best visiting times, and recommended climbing routes for every peak.</p>
-            </div>
-
-            <div class="feature-card">
-                <span class="feature-icon">📚</span>
-                <h3>Become an Expert</h3>
-                <p>Expand your knowledge with every mountain you discover. Build your personal mountain encyclopedia.</p>
-            </div>
-
-            <div class="feature-card">
-                <span class="feature-icon">💾</span>
-                <h3>Save Your History</h3>
-                <p>All your discoveries are saved. Review them anytime and track your mountain adventures.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="download" class="download-section">
-        <h2>Start Exploring Today</h2>
-        <p>Begin your mountain discovery journey with PeakLens Mountain Identifier</p>
-        <a href="https://apps.apple.com/us/app/mountain-identifier-peaklens/id6752770531?itscg=30200&itsct=apps_box_badge&mttnsubad=6752770531" class="cta-button">
-            <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1758758400" alt="Download on the App Store">
-        </a>
-    </section>
-
-    <footer>
-        <p>© 2025 PeakLens. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.feature-card, .hero-screenshot-item').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease';
-            observer.observe(card);
-        });
-    </script>
-</body>
-</html>
+struct ShareMountainCardView_Previews: PreviewProvider {
+    static var previews: some View {
+        let mockMountain = MountainResponse(
+            confidence: 95,
+            mountainName: "Mount Everest",
+            location: "Nepal/Tibet Border",
+            elevation: "8,848.86 m (29,031.7 ft)",
+            mountainRange: "Himalayas",
+            country: "Nepal/China",
+            reasoning: "The distinctive pyramid shape and snow-covered peak with visible glacial features are characteristic of Mount Everest, the world's highest mountain.",
+            difficulty: "Extreme - Requires mountaineering experience",
+            bestTimeToVisit: "April-May, September-October",
+            facts: [
+                "World's highest mountain above sea level",
+                "Known as Sagarmatha in Nepali and Chomolungma in Tibetan",
+                "First successfully climbed by Edmund Hillary and Tenzing Norgay in 1953"
+            ],
+            coordinates: MountainResponse.Coordinates(latitude: 27.9881, longitude: 86.9250),
+            firstAscent: MountainResponse.FirstAscent(
+                year: "1953",
+                climbers: ["Edmund Hillary", "Tenzing Norgay"],
+                route: "South Col Route"
+            ),
+            climate: MountainResponse.Climate(
+                temperature: "-19°C to -36°C",
+                precipitation: "Very low",
+                windSpeed: "Up to 200 km/h",
+                seasonality: "Extreme seasonal variations"
+            ),
+            geology: MountainResponse.Geology(
+                rockType: "Limestone and shale",
+                formation: "Tethys Sea sediments",
+                age: "50-60 million years",
+                specialFeatures: ["Pyramid shape", "Glacial features", "High altitude"]
+            ),
+            wildlife: ["Snow leopard", "Himalayan tahr", "Red panda"],
+            routes: [
+                MountainResponse.ClimbingRoute(
+                    name: "South Col Route",
+                    difficulty: "Extreme",
+                    duration: "60-70 days",
+                    description: "Most popular route via South Col"
+                )
+            ],
+            safety: MountainResponse.SafetyInfo(
+                risks: ["Altitude sickness", "Avalanches", "Extreme weather", "Crevasses"],
+                precautions: ["Acclimatization", "Weather monitoring", "Proper equipment", "Experienced guides"],
+                emergencyInfo: "Rescue operations extremely difficult above 8,000m",
+                rescueAvailability: "Limited helicopter rescue up to 6,000m"
+            ),
+            equipment: ["Oxygen tanks", "Crampons", "Ice axes", "High-altitude tents", "Down suits"],
+            permits: ["Nepal climbing permit", "Tibet travel permit", "Environmental fee"],
+            nearbyAttractions: ["Sagarmatha National Park", "Namche Bazaar", "Tengboche Monastery"],
+            culturalSignificance: "Sacred mountain in both Nepali and Tibetan cultures, known as 'Mother of the World'",
+            weather: MountainResponse.WeatherInfo(
+                currentConditions: "Extreme cold with high winds",
+                forecast: "Unpredictable weather patterns",
+                visibility: "Often poor due to clouds and storms",
+                avalancheRisk: "High risk, especially in spring"
+            )
+        )
+        
+        return ShareMountainCardView(
+            mountain: mockMountain,
+            mountainImage: UIImage(systemName: "mountain.2.fill")!
+        )
+        .previewLayout(.fixed(width: 1080, height: 1920))
+    }
+}
